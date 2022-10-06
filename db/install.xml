@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="payment/gateway/unigraz/db" VERSION="20201216" COMMENT="XMLDB file for unigraz payment gateway plugin"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="paygw_unigraz" COMMENT="Stores unigraz related information">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="paymentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="unigraz_orderid" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="The ID of the order in unigraz" SEQUENCE="false"/>
+        <FIELD NAME="paymentbrand" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Stores PaymentBrand for each transaction"/>
+        <FIELD NAME="pboriginal" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Original Brand String from Provider"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="paymentid" TYPE="foreign-unique" FIELDS="paymentid" REFTABLE="payments" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+      <TABLE NAME="paygw_unigraz_openorders" COMMENT="Contains TIDs that yet have to be processed">
+      <FIELDS>
+       <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="tid" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

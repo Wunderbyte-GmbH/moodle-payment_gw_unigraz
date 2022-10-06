@@ -1,0 +1,42 @@
+<div>
+    <div class="row">
+       <div class="col">
+            <h2>   
+                {{#str}}
+            paymentoptions, paygw_unigraz
+                {{/str}}
+            </h2>
+            <ul class="list-group" >
+              {{#listofproviders}}
+              <li class="list-group-item" style="display: flex;
+    justify-content: space-between;">
+                <button class="btn btn-primary select" data-index="{{id}}">{{label}}</button>
+                 <div >
+                <img class="img-fluid" src="{{image_url}}" />
+                </div>
+                </li>
+               {{/listofproviders}}
+            </ul>
+       </div>
+    </div>
+</div>
+
+
+{{#js}}
+    require(['jquery', 'paygw_unigraz/redirectpayment'], function($, redirectpayment) {
+     $('.select').click(function(e) { 
+
+     var el = e.currentTarget;
+     var index = el.dataset['index'];
+
+    redirectpayment.init('{{component}}',
+                        '{{paymentarea}}',
+                        '{{itemid}}',
+                        '{{tid}}',
+                        '{{cartid}}',
+                        index
+                        );
+
+    });
+    });
+{{/js}}
