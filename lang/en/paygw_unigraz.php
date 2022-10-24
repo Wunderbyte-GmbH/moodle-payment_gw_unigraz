@@ -64,3 +64,8 @@ $string['unknownbrand'] = "UK";
 $string['MASTERCARD'] = "MC";
 $string['VISA'] = "VC";
 $string['EPS'] = "EP";
+
+$string['unknowncity'] = "unknown city";
+$string['unknowncountry'] = "unknown country";
+$string['unknownzip'] = "unknown zip";
+$string['unknownaddress'] = "unknown address";

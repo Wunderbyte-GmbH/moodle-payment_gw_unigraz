@@ -65,4 +65,9 @@ $string['MASTERCARD'] = "MC";
 $string['VISA'] = "VC";
 $string['EPS'] = "EP";
 
+$string['unknowncity'] = "Unbekannte Stadt";
+$string['unknowncountry'] = "Unbekanntes Land";
+$string['unknownzip'] = "Unbekannte Postleitzahl";
+$string['unknownaddress'] = "Unbekannte Adresse";
+
 

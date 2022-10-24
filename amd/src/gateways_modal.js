@@ -47,7 +47,6 @@ const showModalWithPlaceholder = async () => {
 };
 
 
-
 /**
  * Process the payment.
  *
@@ -79,9 +78,6 @@ export const process = (component, paymentArea, itemId, description) => {
                 component,
                 paymentarea: paymentArea,
                 itemid: itemId,
-                tid: unigrazConfig.tid
-
-
             };
 
 

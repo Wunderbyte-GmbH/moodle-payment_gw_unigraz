@@ -3,8 +3,7 @@ import Ajax from 'core/ajax';
 
 export const init = (component,
     paymentarea,
-    itemid,
-    tid, cartid, providerid) => {
+    itemid, cartid, providerid) => {
 
 
     Ajax.call([{
@@ -13,7 +12,6 @@ export const init = (component,
             component,
             paymentarea,
             itemid,
-            tid,
             cartid,
             providerid
         },

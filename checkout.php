@@ -29,7 +29,6 @@ global $DB, $PAGE, $OUTPUT, $USER;
 
 $customer = required_param('customer', PARAM_RAW);
 $itemid = required_param('itemid', PARAM_RAW);
-$tid = required_param('tid', PARAM_RAW);
 $component = required_param('component', PARAM_RAW);
 $paymentarea = required_param('paymentarea', PARAM_RAW);
 $ischeckstatus = required_param('ischeckstatus', PARAM_BOOL);
@@ -56,7 +55,7 @@ $PAGE->add_body_class('paygw_unigraz_checkout');
 echo $OUTPUT->header();
 
 $output = $PAGE->get_renderer('paygw_unigraz');
-$data = new checkout($itemid, $customer, $component, $paymentarea, $tid, $ischeckstatus, $cartid);
+$data = new checkout($itemid, $customer, $component, $paymentarea, $ischeckstatus, $cartid);
 
 echo $output->render_checkout($data);
 

@@ -29,6 +29,7 @@ namespace paygw_unigraz\external;
 
 
 use core_payment\helper;
+use core_user;
 use DateTime;
 use external_api;
 use external_function_parameters;
@@ -83,19 +84,13 @@ class get_config_for_js extends external_api {
 
         $language = $USER->lang;
         $secret = $config['secret'];
-        $entityid = $config['clientid'];
         $root = $CFG->wwwroot;
         $environment = $config['environment'];
 
-        $string = bin2hex(openssl_random_pseudo_bytes(8));
-        $now = new DateTime();
-        $timestamp = $now->getTimestamp();
-        $tid = $string . $timestamp;
-
-        // Get single items.
+        // Get all items from shoppingcart.
         $items = shopping_cart_history::return_data_via_identifier($itemid, (int)$USER->id);
 
-        $ughelper = new unigraz_helper($environment, $entityid, $secret);
+        $ughelper = new unigraz_helper($environment, $secret);
         $provider = $ughelper->get_provider();
         $checkout = $ughelper->create_checkout($items);
         $checkoutobj = json_decode($checkout);
@@ -111,7 +106,7 @@ class get_config_for_js extends external_api {
         // Create Task to check status after 30 minutes.
         $userid = $USER->id;
         $now = time();
-        $nextruntime = strtotime('+1 min', $now);
+        $nextruntime = strtotime('+30 min', $now);
 
         $taskdata = new stdClass();
         $taskdata->itemid = $itemid;
@@ -136,7 +131,6 @@ class get_config_for_js extends external_api {
             'rooturl' => $root,
             'environment' => $environment,
             'language' => $language,
-            'tid' => $tid,
             'providerobject' => $provider,
             'cartid' => $cartid
         ];
@@ -157,7 +151,6 @@ class get_config_for_js extends external_api {
             'rooturl' => new external_value(PARAM_TEXT, 'Moodle Root URI'),
             'environment' => new external_value(PARAM_TEXT, 'Prod or Sandbox'),
             'language' => new external_value(PARAM_TEXT, 'language'),
-            'tid' => new external_value(PARAM_TEXT, 'unique transaction id'),
             'providerobject' => new external_value(PARAM_TEXT, 'providers'),
             'cartid' => new external_value(PARAM_INT, 'unique transaction id'),
         ]);

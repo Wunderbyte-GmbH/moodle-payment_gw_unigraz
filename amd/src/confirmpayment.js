@@ -25,13 +25,13 @@ import Ajax from 'core/ajax';
 import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 
-export const init = (itemid, customer, component, paymentarea, tid, ischeckstatus, cartid) => {
+export const init = (itemid, customer, component, paymentarea, ischeckstatus, cartid) => {
 
 
     Ajax.call([{
         methodname: "paygw_unigraz_create_transaction_complete",
         args: {
-            itemid, customer, component, paymentarea, tid, ischeckstatus, cartid
+            itemid, customer, component, paymentarea, ischeckstatus, cartid
         },
         done: function(data) {
 

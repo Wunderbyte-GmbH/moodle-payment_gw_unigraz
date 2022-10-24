@@ -26,27 +26,15 @@ namespace paygw_unigraz;
 
 use curl;
 use core_payment\helper;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once("$CFG->dirroot/user/lib.php");
+require_once("$CFG->dirroot/user/profile/lib.php");
 require_once($CFG->libdir . '/filelib.php');
 
 class unigraz_helper {
-
-    /**
-     * @var string environment
-     */
-    private $environment;
-
-    /**
-     * @var string Client ID
-     */
-    private $clientid;
-
-    /**
-     * @var string unigraz Secret
-     */
-    private $secret;
 
     /**
      * @var string base URL
@@ -54,17 +42,12 @@ class unigraz_helper {
     private $baseurl;
 
     /**
-     * helper constructor.
+     * helper constructor
      *
-     * @param string $clientid The client id.
      * @param string $secret unigraz secret.
      * @param bool $sandbox Whether we are working with the sandbox environment or not.
      */
-    public function __construct( $environment, string $clientid, string $secret ) {
-
-        $this->environment = $environment;
-        $this->clientid = $clientid;
-        $this->secret = $secret;
+    public function __construct( $environment, string $secret ) {
 
         if ($environment == 'sandbox') {
             $this->baseurl = 'https://stagebezahlung.uni-graz.at/v/1/shop/' . $secret;
@@ -97,22 +80,24 @@ class unigraz_helper {
      * @param  int $cartid Cart Id
      * @param  int $providerid I.E Creditcard, Klarna etc.
      * @param  string $redirecturl The url to which the gateway redirects after payment
+     * @param  object $userdata Containing the user data
      * @return string The url that can be called for the redirect
      */
-    public function checkout_cart($cartid, $providerid, $redirecturl) {
+    public function checkout_cart($cartid, $providerid, $redirecturl, $userdata) {
+
+        profile_load_custom_fields($userdata);
         $obj = (object) [
             "provider_id" => $providerid,
             "user_variable" => "localIdentifierCheckout",
-            "user_email" => "shopnotify@uni-graz.at",
-            "email" => "usernotify@uni-graz.at",
-            "gender" => 1,
-            "first_name" => "Max",
-            "last_name" => "Mustermann",
-            "address" => "Universitätsstraße 1",
-            "zip" => "8010",
-            "city" => "Graz",
-            "country" => "AT",
-            "ip" => "0.0.0.0/0",
+            "email" => !empty($userdata->email) ? $userdata->email : 'Email Uknown',
+            "gender" => 0,
+            "first_name" => !empty($userdata->firstname) ? $userdata->firstname : 'First Name Unknown',
+            "last_name" => !empty($userdata->lastname) ? $userdata->lastname : 'Last Name Unknown',
+            "address" => !empty($userdata->address) ? $userdata->address : get_string('unknownaddress', 'paygw_unigraz'),
+            "zip" => !empty($userdata->profile['postcode']) ? $userdata->profile['postcode'] : get_string('unknownzip', 'paygw_unigraz'),
+            "city" => !empty($userdata->city) ? $userdata->city : get_string('unknowncity', 'paygw_unigraz'),
+            "country" => !empty($userdata->country) ? $userdata->country : get_string('unknowncountry', 'paygw_unigraz'),
+            "ip" => "8.8.8.8",
             "user_url_success" => $redirecturl,
             "user_url_failure" => $redirecturl,
             "user_url_cancel" => $redirecturl,
@@ -165,12 +150,20 @@ class unigraz_helper {
     public function create_checkout($items) {
 
         $articles = [];
+        $now = time();
         foreach ($items as $item) {
-            $sku = explode(' - ', $item->itemname);
+            list($sku, $label) = explode(' - ', $item->itemname);
+
+            if (!empty($item->serviceperiodstart)) {
+                $performancebebgin = date('Y-m-d', $item->serviceperiodstart);
+            }
+            if (!empty($item->serviceperiodend)) {
+                $performanceend = date('Y-m-d', $item->serviceperiodend);
+            }
 
             $singlearcticle = (object) [
-                "sku" => $sku[0],
-                "label" => $sku[1],
+                "sku" => $sku,
+                "label" => $label,
                 "count" => 1,
                 "price_net" => $item->price,
                 "price_gross" => $item->price,
@@ -178,10 +171,10 @@ class unigraz_helper {
                 "vat_percent" => 0,
                 "vat_amount" => 0,
                 "spurious_exempt" => false,
-                "performance_begin" => "2016-04-19",
-                "performance_end" => "2016-04-19",
-                "account" => "441000",
-                "internal_order" => "AEP707000002",
+                "performance_begin" => $performancebebgin ?? date('Y-m-d', $now),
+                "performance_end" => $performanceend ?? date('Y-m-d', $now),
+                "account" => "441000", // Konto for USI.
+                "internal_order" => "AEP707000002", // Interalorder USI.
                 "user_variable" => "localIdentifierArticle"
             ];
             array_push($articles, $singlearcticle);

@@ -14,7 +14,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * PayPal repository module to encapsulate all of the AJAX requests that can be sent for unigraz.
  *
  * @module     paygw_unigraz/repository
  * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
@@ -24,7 +23,7 @@
 import Ajax from 'core/ajax';
 
 /**
- * Return the PayPal JavaScript SDK URL.
+ * Inits and returns the config for payment process with unigraz
  *
  * @param {string} component Name of the component that the itemId belongs to
  * @param {string} paymentArea The area of the component that the itemId belongs to

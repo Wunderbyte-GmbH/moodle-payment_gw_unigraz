@@ -53,7 +53,6 @@ class transaction_complete extends external_api {
             'customer' => new external_value(PARAM_RAW, 'Customer Id'),
             'component' => new external_value(PARAM_COMPONENT, 'The component name'),
             'paymentarea' => new external_value(PARAM_AREA, 'Payment area in the component'),
-            'tid' => new external_value(PARAM_TEXT, 'unique transaction id'),
             'ischeckstatus' => new external_value(PARAM_BOOL, 'If initial purchase or cron execution'),
             'cartid' => new external_value(PARAM_INT, 'cart id')
         ]);
@@ -69,7 +68,7 @@ class transaction_complete extends external_api {
      * @param string $orderid unigraz order ID
      * @return array
      */
-    public static function execute($itemid, $customer, $component, $paymentarea, $tid, $ischeckstatus, $cartid): array {
+    public static function execute($itemid, $customer, $component, $paymentarea, $ischeckstatus, $cartid): array {
 
         global $USER, $DB, $CFG, $DB;
         self::validate_parameters(self::execute_parameters(), [
@@ -77,7 +76,6 @@ class transaction_complete extends external_api {
             'customer' => $customer,
             'component' => $component,
             'paymentarea' => $paymentarea,
-            'tid' => $tid,
             'ischeckstatus' => $ischeckstatus,
             'cartid' => $cartid
         ]);
@@ -95,7 +93,7 @@ class transaction_complete extends external_api {
         $successurl = helper::get_success_url($component, $paymentarea, $itemid)->__toString();
         $serverurl = $CFG->wwwroot;
 
-        $ughelper = new unigraz_helper($config->environment, $config->clientid, $config->secret);
+        $ughelper = new unigraz_helper($config->environment, $config->secret);
         $orderdetails = $ughelper->check_status($cartid);
 
         $success = false;
@@ -103,7 +101,7 @@ class transaction_complete extends external_api {
 
         if ($orderdetails) {
             $returnstatus = $orderdetails->object->status;
-            $transactionid = $tid;
+            $transactionid = $cartid;
             $url = $serverurl;
             $status = '';
             // SANDBOX OR PROD.

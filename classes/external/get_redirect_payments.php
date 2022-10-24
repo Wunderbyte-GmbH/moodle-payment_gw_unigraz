@@ -31,6 +31,7 @@ use external_api;
 use external_function_parameters;
 use external_value;
 use core_payment\helper as payment_helper;
+use core_user;
 use paygw_unigraz\unigraz_helper;
 
 defined('MOODLE_INTERNAL') || die();
@@ -50,38 +51,34 @@ class get_redirect_payments extends external_api {
             'component' => new external_value(PARAM_COMPONENT, 'The component name'),
             'paymentarea' => new external_value(PARAM_AREA, 'Payment area in the component'),
             'itemid' => new external_value(PARAM_INT, 'The item id in the context of the component area'),
-            'tid' => new external_value(PARAM_TEXT, 'unique transaction id'),
             'cartid' => new external_value(PARAM_INT, 'unique transaction id'),
             'providerid' => new external_value(PARAM_INT, 'provider id'),
         ]);
     }
 
-    public static function execute($component, $paymentarea, $itemid, $tid, $cartid, $providerid) {
-        GLOBAL $CFG;
+    public static function execute($component, $paymentarea, $itemid, $cartid, $providerid) {
+        GLOBAL $CFG, $USER;
 
         self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
             'paymentarea' => $paymentarea,
             'itemid' => $itemid,
-            'tid' => $tid,
             'cartid' => $cartid,
             'providerid' => $providerid
         ]);
         $config = helper::get_gateway_configuration($component, $paymentarea, $itemid, 'unigraz');
-        $payable = helper::get_payable($component, $paymentarea, $itemid);
-        $surcharge = helper::get_gateway_surcharge('unigraz');
         $environment = $config['environment'];
-        $price = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
         $root = $CFG->wwwroot;
         $secret = $config['secret'];
-        $entityid = $config['clientid'];
-        $ughelper = new unigraz_helper($environment, $entityid, $secret);
+        $ughelper = new unigraz_helper($environment, $secret);
 
         $redirecturl = $root . "/payment/gateway/unigraz/checkout.php?customer=" .
         $config['clientid'] . "&itemid=" . $itemid . "&component=" . $component .
-        "&paymentarea=" . $paymentarea . "&tid=" . $tid . "&ischeckstatus=true" . "&cartid=" . $cartid;
+        "&paymentarea=" . $paymentarea . "&ischeckstatus=true" . "&cartid=" . $cartid;
 
-        $url = $ughelper->checkout_cart($cartid, $providerid, $redirecturl);;
+        $userdata = core_user::get_user($USER->id);
+
+        $url = $ughelper->checkout_cart($cartid, $providerid, $redirecturl, $userdata);
 
         return [
             'url' => $url,
