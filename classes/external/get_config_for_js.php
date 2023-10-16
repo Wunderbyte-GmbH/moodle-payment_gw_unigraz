@@ -88,7 +88,7 @@ class get_config_for_js extends external_api {
         $environment = $config['environment'];
 
         // Get all items from shoppingcart.
-        $items = shopping_cart_history::return_data_via_identifier($itemid, (int)$USER->id);
+        $items = shopping_cart_history::return_data_via_identifier($itemid);
 
         $ughelper = new unigraz_helper($environment, $secret);
         $provider = $ughelper->get_provider();
@@ -96,10 +96,11 @@ class get_config_for_js extends external_api {
         $checkoutobj = json_decode($checkout);
         $cartid = $checkoutobj->object->id;
 
-        $record = new \stdClass();
+        $record = new stdClass();
         $record->tid = $cartid;
         $record->itemid = $itemid;
         $record->userid = intval($USER->id);
+        $record->status = 0;
 
         $DB->insert_record('paygw_unigraz_openorders', $record);
 

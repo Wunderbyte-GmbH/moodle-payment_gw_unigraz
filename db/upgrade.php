@@ -65,5 +65,44 @@ function xmldb_paygw_unigraz_upgrade(int $oldversion): bool {
         // unigraz savepoint reached.
         upgrade_plugin_savepoint(true, 2022080800, 'paygw', 'unigraz');
     }
+
+    if ($oldversion < 2023100400) {
+
+        // Changing type of field tid on table paygw_unigraz_openorders to char.
+        $table = new xmldb_table('paygw_unigraz_openorders');
+        $field = new xmldb_field('tid', XMLDB_TYPE_CHAR, '256', null, XMLDB_NOTNULL, null, null, 'id');
+
+        // Launch change of type for field tid.
+        $dbman->change_field_type($table, $field);
+
+        $field = new xmldb_field('price', XMLDB_TYPE_NUMBER, '10, 2', null, null, null, null);
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field timecreated to be added to paygw_unigraz_openorders.
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'status');
+        // Conditionally launch add field timecreated.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field timemodified to be added to paygw_unigraz_openorders.
+        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'timecreated');
+        // Conditionally launch add field timemodified.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2023100400, 'paygw', 'unigraz');
+    }
+
     return true;
 }

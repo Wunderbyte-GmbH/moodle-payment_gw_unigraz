@@ -199,6 +199,10 @@ class unigraz_helper {
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
         $result = curl_exec($ch );
+
+        $info = curl_getinfo($ch);
+        $error = curl_error($ch);
+
         curl_close( $ch );
         return $result;
 
