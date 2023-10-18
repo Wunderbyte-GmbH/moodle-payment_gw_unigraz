@@ -96,11 +96,17 @@ class get_config_for_js extends external_api {
         $checkoutobj = json_decode($checkout);
         $cartid = $checkoutobj->object->id;
 
+        $now = time();
+        $amount = helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge);
+
         $record = new stdClass();
         $record->tid = $cartid;
         $record->itemid = $itemid;
         $record->userid = intval($USER->id);
         $record->status = 0;
+        $record->price = $amount;
+        $record->timecreated = $now;
+        $record->timemodified = $now;
 
         $DB->insert_record('paygw_unigraz_openorders', $record);
 
@@ -127,7 +133,7 @@ class get_config_for_js extends external_api {
         return [
             'clientid' => $config['clientid'],
             'brandname' => $config['brandname'],
-            'cost' => helper::get_rounded_cost($payable->get_amount(), $payable->get_currency(), $surcharge),
+            'cost' => $amount,
             'currency' => $payable->get_currency(),
             'rooturl' => $root,
             'environment' => $environment,
