@@ -49,12 +49,13 @@ class transaction_complete extends external_api {
      */
     public static function execute_parameters() {
         return new external_function_parameters([
-            'itemid' => new external_value(PARAM_INT, 'The item id in the context of the component area'),
-            'customer' => new external_value(PARAM_RAW, 'Customer Id'),
             'component' => new external_value(PARAM_COMPONENT, 'The component name'),
             'paymentarea' => new external_value(PARAM_AREA, 'Payment area in the component'),
-            'ischeckstatus' => new external_value(PARAM_BOOL, 'If initial purchase or cron execution'),
-            'cartid' => new external_value(PARAM_INT, 'cart id')
+            'itemid' => new external_value(PARAM_INT, 'The item id in the context of the component area'),
+            'cartid' => new external_value(PARAM_TEXT, 'unique transaction id'),
+            'token' => new external_value(PARAM_RAW, 'Purchase token', VALUE_DEFAULT, ''),
+            'customer' => new external_value(PARAM_RAW, 'Customer Id', VALUE_DEFAULT, ''),
+            'ischeckstatus' => new external_value(PARAM_BOOL, 'If initial purchase or cron execution', VALUE_DEFAULT, false),
         ]);
     }
 
@@ -68,16 +69,19 @@ class transaction_complete extends external_api {
      * @param string $orderid unigraz order ID
      * @return array
      */
-    public static function execute($itemid, $customer, $component, $paymentarea, $ischeckstatus, $cartid): array {
+    public static function execute(string $component, string $paymentarea, int $itemid, string $cartid, string $token = '0',
+    string $customer = '0', bool $ischeckstatus = false, string $resourcepath = '', int $userid = 0): array {
 
         global $USER, $DB, $CFG, $DB;
         self::validate_parameters(self::execute_parameters(), [
-            'itemid' => $itemid,
-            'customer' => $customer,
             'component' => $component,
             'paymentarea' => $paymentarea,
+            'itemid' => $itemid,
+            'cartid' => $cartid,
+            'token' => $token,
+            'customer' => $customer,
             'ischeckstatus' => $ischeckstatus,
-            'cartid' => $cartid
+
         ]);
 
         $config = (object)helper::get_gateway_configuration($component, $paymentarea, $itemid, 'unigraz');
@@ -94,7 +98,7 @@ class transaction_complete extends external_api {
         $serverurl = $CFG->wwwroot;
 
         $ughelper = new unigraz_helper($config->environment, $config->secret);
-        $orderdetails = $ughelper->check_status($cartid);
+        $orderdetails = $ughelper->check_status((int)$cartid);
 
         $success = false;
         $message = '';

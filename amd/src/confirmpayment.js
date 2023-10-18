@@ -31,7 +31,13 @@ export const init = (itemid, customer, component, paymentarea, ischeckstatus, ca
     Ajax.call([{
         methodname: "paygw_unigraz_create_transaction_complete",
         args: {
-            itemid, customer, component, paymentarea, ischeckstatus, cartid
+            component,
+            paymentarea,
+            itemid,
+            cartid,
+            token: '',
+            customer,
+            ischeckstatus
         },
         done: function(data) {
 

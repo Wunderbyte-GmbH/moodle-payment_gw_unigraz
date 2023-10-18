@@ -140,7 +140,6 @@ class unigraz_helper {
         return json_decode($responsedata);
     }
 
-
     /**
      * Creates a checkout with the Provider given an array of items
      *
