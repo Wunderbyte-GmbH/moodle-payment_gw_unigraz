@@ -126,7 +126,7 @@ class unigraz_helper {
      * Checks the Payment status for a given cartid
      *
      * @param  int $cartid
-     * @return object|null Formatted API response.
+     * @return object|string|null Formatted API response.
      */
     public function check_status($cartid) {
         $ch = curl_init();
@@ -136,9 +136,15 @@ class unigraz_helper {
         if (curl_errno($ch)) {
             return curl_error($ch);
         }
+        $info = curl_getinfo($ch);
         curl_close($ch);
-        return json_decode($responsedata);
+
+        if (!$response = json_decode($responsedata)) {
+            return strval($responsedata);
+        }
+        return $response;
     }
+
 
     /**
      * Creates a checkout with the Provider given an array of items

@@ -103,7 +103,7 @@ class transaction_complete extends external_api {
         $success = false;
         $message = '';
 
-        if ($orderdetails) {
+        if ($orderdetails && isset($orderdetails->object->status)) {
             $returnstatus = $orderdetails->object->status;
             $transactionid = $cartid;
             $url = $serverurl;
@@ -193,7 +193,7 @@ class transaction_complete extends external_api {
         } else {
             // Could not capture authorization!
             $success = false;
-            $message = get_string('cannotfetchorderdatails', 'paygw_unigraz');
+            $message = get_string('cannotfetchorderdatails', 'paygw_unigraz') . " " . strval($orderdetails);
         }
 
         // If there is no success, we trigger this event.
@@ -202,7 +202,7 @@ class transaction_complete extends external_api {
             $context = context_system::instance();
             $event = payment_error::create(array('context' => $context, 'other' => [
                 'message' => $message,
-                'orderid' => $transactionid,
+                'orderid' => $cartid,
                 'itemid' => $itemid,
                 'component' => $component,
                 'paymentarea' => $paymentarea]));
@@ -210,7 +210,7 @@ class transaction_complete extends external_api {
         }
 
         return [
-            'url' => $url,
+            'url' => $url ?? '',
             'success' => $success,
             'message' => $message,
         ];
