@@ -32,6 +32,8 @@ use external_api;
 use external_function_parameters;
 use external_value;
 use core_payment\helper as payment_helper;
+use paygw_unigraz\event\delivery_error;
+use paygw_unigraz\event\payment_completed;
 use paygw_unigraz\event\payment_error;
 use paygw_unigraz\event\payment_successful;
 use paygw_unigraz\unigraz_helper;
@@ -167,6 +169,26 @@ class transaction_complete extends external_api {
                         $record->pboriginal = 'unknown';
 
                         $DB->insert_record('paygw_unigraz', $record);
+
+
+                        // Set status in open_orders to complete.
+                        if ($existingrecord = $DB->get_record('paygw_unigraz_openorders',
+                         ['tid' => $cartid])) {
+                            $existingrecord->status = 3;
+                            $DB->update_record('paygw_unigraz_openorders', $existingrecord);
+
+                            // We trigger the payment_completed event.
+                            $context = context_system::instance();
+                            $event = payment_completed::create([
+                                'context' => $context,
+                                'userid' => $userid,
+                                'other' => [
+                                    'orderid' => $orderdetails->merchantTransactionId
+                                ]
+                            ]);
+                            $event->trigger();
+                        }
+
                         // We trigger the payment_successful event.
                         $context = context_system::instance();
                         $event = payment_successful::create(array('context' => $context, 'other' => [
@@ -176,10 +198,17 @@ class transaction_complete extends external_api {
                         $event->trigger();
 
                         // The order is delivered.
-                        payment_helper::deliver_order($component, $paymentarea, $itemid, $paymentid, (int) $USER->id);
+                        // If the delivery was not successful, we trigger an event.
+                        if (!payment_helper::deliver_order($component, $paymentarea, $itemid, $paymentid, (int) $userid)) {
+
+                            $context = context_system::instance();
+                            $event = delivery_error::create(array('context' => $context, 'other' => [
+                                'message' => $message,
+                                'orderid' => $cartid]));
+                            $event->trigger();
+                        }
 
                         // Delete transaction after its been delivered.
-                        $DB->delete_records('paygw_unigraz_openorders', array('tid' => $cartid));
                     } catch (\Exception $e) {
                         debugging('Exception while trying to process payment: ' . $e->getMessage(), DEBUG_DEVELOPER);
                         $success = false;
