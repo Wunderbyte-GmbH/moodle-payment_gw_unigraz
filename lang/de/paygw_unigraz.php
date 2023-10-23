@@ -51,8 +51,11 @@ $string['success'] = 'Erfolg';
 $string['error'] = 'Fehler';
 $string['proceed'] = 'Fortfahren';
 
-$string['payment_successful'] = 'Zahlung erfolgreich. Klicken sie auf Fortfahren um zu Ihrem Kurs weitergeleitet zu werden.';
-$string['payment_error'] = 'Ein Fehler ist bei der Zahlung mit unigraz aufgetreten. Bitte versuchen sie es Später erneut.';
+$string['payment_added'] = 'Zahlungstransaktion wurde gestartet. (Offener Auftrag wurde angelegt.)';
+$string['payment_completed'] = 'Zahlungstransaktion wurde abgeschlossen.';
+$string['payment_successful'] = 'Zahlung erfolgreich. Klicken sie auf "Fortfahren" um zu Ihrem Kurs weitergeleitet zu werden.';
+$string['payment_error'] = 'Ein Fehler ist bei der Zahlung mit PayUnity aufgetreten. Bitte versuchen sie es später erneut.';
+$string['delivery_error'] = 'Die Zahlung war erfolgreich, aber bei der Auslieferung gab es ein Problem. Bitte wenden Sie sich an den Support.';
 
 $string['paymentoptions'] = "Zahlungsarten";
 $string['more'] = "Mehr";

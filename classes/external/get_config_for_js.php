@@ -28,6 +28,7 @@ namespace paygw_unigraz\external;
 
 
 
+use context_system;
 use core_payment\helper;
 use core_user;
 use DateTime;
@@ -37,6 +38,7 @@ use external_value;
 use external_single_structure;
 use local_shopping_cart\shopping_cart;
 use local_shopping_cart\shopping_cart_history;
+use paygw_unigraz\event\payment_added;
 use paygw_unigraz\task\check_status;
 use stdClass;
 use paygw_unigraz\unigraz_helper;
@@ -108,7 +110,24 @@ class get_config_for_js extends external_api {
         $record->timecreated = $now;
         $record->timemodified = $now;
 
-        $DB->insert_record('paygw_unigraz_openorders', $record);
+        // Check for duplicate.
+        if (!$existingrecord = $DB->get_record('paygw_unigraz_openorders', ['itemid' => $itemid, 'userid' => $USER->id])) {
+            $id = $DB->insert_record('paygw_unigraz_openorders', $record);
+
+            // We trigger the payment_added event.
+            $context = context_system::instance();
+            $event = payment_added::create([
+                'context' => $context,
+                'userid' => $USER->id,
+                'objectid' => $id,
+                'other' => [
+                    'orderid' => $cartid
+                ]
+            ]);
+            $event->trigger();
+        } else {
+            $cartid = $existingrecord->tid;
+        }
 
         // Create Task to check status after 30 minutes.
         $userid = $USER->id;

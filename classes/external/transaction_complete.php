@@ -183,7 +183,7 @@ class transaction_complete extends external_api {
                                 'context' => $context,
                                 'userid' => $userid,
                                 'other' => [
-                                    'orderid' => $orderdetails->merchantTransactionId
+                                    'orderid' => $cartid,
                                 ]
                             ]);
                             $event->trigger();

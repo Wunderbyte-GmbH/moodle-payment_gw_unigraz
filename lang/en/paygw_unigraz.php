@@ -47,8 +47,11 @@ $string['secret_help'] = 'The secret that unigraz generated for your application
 $string['checkout'] = 'Checkout';
 $string['loading'] = 'Loading...';
 
+$string['payment_added'] = 'Payment transaction was started. (Open order was added.)';
+$string['payment_completed'] = 'Payment transaction was completed.';
 $string['payment_successful'] = 'Payment successful. Click to continue to your course.';
 $string['payment_error'] = 'An error occured during the payment. Please try again later.';
+$string['delivery_error'] = 'Your payment was successful, but there was an error during delivery. Please contact support.';
 
 $string['success'] = 'Success';
 $string['error'] = 'Error';
