@@ -25,12 +25,10 @@
 declare(strict_types=1);
 namespace paygw_unigraz\external;
 
-use context_system;
 use core_payment\helper;
 use external_api;
 use external_function_parameters;
 use external_value;
-use core_payment\helper as payment_helper;
 use core_user;
 use paygw_unigraz\unigraz_helper;
 
