@@ -167,8 +167,8 @@ class unigraz_helper {
             }
 
             $singlearcticle = (object) [
-                "sku" => $sku,
-                "label" => $label,
+                "sku" => $sku ?? '',
+                "label" => $label ?? $sku ?? '',
                 "count" => 1,
                 "price_net" => $item->price,
                 "price_gross" => $item->price,
