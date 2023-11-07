@@ -80,10 +80,14 @@ export const process = (component, paymentArea, itemId, description) => {
                 itemid: itemId,
             };
 
-
             Templates.renderForPromise('paygw_unigraz/paymentoptions', context).then(({html, js}) => {
-                    Templates.appendNodeContents(optionsel, html, js);
+
                     modal.setBody(optionsel);
+
+                    // We need a minimal delay to make sure we run the js only after the modal has its body.
+                    setTimeout(() => {
+                        Templates.appendNodeContents(optionsel, html, js);
+                    }, 50);
                     return true;
                 }).catch();
 
