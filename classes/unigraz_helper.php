@@ -94,8 +94,8 @@ class unigraz_helper {
             "first_name" => !empty($userdata->firstname) ? $userdata->firstname : 'First Name Unknown',
             "last_name" => !empty($userdata->lastname) ? $userdata->lastname : 'Last Name Unknown',
             "address" => !empty($userdata->address) ? $userdata->address : get_string('unknownaddress', 'paygw_unigraz'),
-            "zip" => !empty($userdata->profile['postcode']) ? $userdata->profile['postcode'] : get_string('unknownzip',
-                'paygw_unigraz'),
+            "zip" => !empty($userdata->profile['postcode']) ? $userdata->profile['postcode'] :
+                get_string('unknownzip', 'paygw_unigraz'),
             "city" => !empty($userdata->city) ? $userdata->city : get_string('unknowncity', 'paygw_unigraz'),
             "country" => !empty($userdata->country) ? $userdata->country : get_string('unknowncountry', 'paygw_unigraz'),
             "ip" => "8.8.8.8",
