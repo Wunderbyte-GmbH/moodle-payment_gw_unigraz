@@ -68,11 +68,15 @@ class transaction_complete extends external_api {
      * @param string $component Name of the component that the itemid belongs to
      * @param string $paymentarea
      * @param int $itemid An internal identifier that is used by the component
-     * @param string $orderid unigraz order ID
+     * @param string $cartid
+     * @param string $token
+     * @param string $customer
+     * @param bool $ischeckstatus
+     * @param int $userid
      * @return array
      */
     public static function execute(string $component, string $paymentarea, int $itemid, string $cartid, string $token = '0',
-    string $customer = '0', bool $ischeckstatus = false, string $resourcepath = '', int $userid = 0): array {
+    string $customer = '0', bool $ischeckstatus = false, int $userid = 0): array {
 
         global $USER, $DB, $CFG, $DB;
         self::validate_parameters(self::execute_parameters(), [
@@ -83,7 +87,6 @@ class transaction_complete extends external_api {
             'token' => $token,
             'customer' => $customer,
             'ischeckstatus' => $ischeckstatus,
-
         ]);
 
         $config = (object)helper::get_gateway_configuration($component, $paymentarea, $itemid, 'unigraz');
@@ -165,11 +168,10 @@ class transaction_complete extends external_api {
                         $record->paymentid = $paymentid;
                         $record->unigraz_orderid = $cartid;
 
-                        $record->paymentbrand = 'unkown';
+                        $record->paymentbrand = 'unknown';
                         $record->pboriginal = 'unknown';
 
                         $DB->insert_record('paygw_unigraz', $record);
-
 
                         // Set status in open_orders to complete.
                         if ($existingrecord = $DB->get_record('paygw_unigraz_openorders',
@@ -192,8 +194,8 @@ class transaction_complete extends external_api {
                         // We trigger the payment_successful event.
                         $context = context_system::instance();
                         $event = payment_successful::create(array('context' => $context, 'other' => [
-                        'message' => $message,
-                        'orderid' => $transactionid
+                            'message' => $message,
+                            'orderid' => $transactionid,
                         ]));
                         $event->trigger();
 
@@ -204,7 +206,8 @@ class transaction_complete extends external_api {
                             $context = context_system::instance();
                             $event = delivery_error::create(array('context' => $context, 'other' => [
                                 'message' => $message,
-                                'orderid' => $cartid]));
+                                'orderid' => $cartid,
+                            ]));
                             $event->trigger();
                         }
 
