@@ -21,6 +21,7 @@
  * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['modulename'] = 'Payment gateway for USI Graz';
 
 $string['amountmismatch'] = 'The amount you attempted to pay does not match the required fee. Your account has not been debited.';
 $string['authorising'] = 'Authorising the payment. Please wait...';

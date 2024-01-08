@@ -21,6 +21,7 @@
  * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['modulename'] = 'Payment Gateway für USI Graz';
 
 $string['amountmismatch'] = 'Der Betrag, den Sie zu zahlen versuchen, entspricht nicht dem gespeicherten Betrag. Ihr Konto wurde nicht belastet.';
 $string['authorising'] = 'Authorisiere die Zahlung. Bitte warten...';
