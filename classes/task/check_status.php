@@ -63,15 +63,16 @@ class check_status extends \core\task\adhoc_task {
 
         $userid = $this->get_userid();
 
-        $result = transaction_complete::execute(
+        transaction_complete::execute(
             $taskdata->component,
             $taskdata->paymentarea,
             $taskdata->itemid,
-            $taskdata->cartid,
+            $taskdata->tid ?? '',
             $taskdata->token ?? '0',
             $taskdata->customer ?? '0',
-            $taskdata->ischeckstatus ?? false,
-            $taskdata->userid ?? 0
+            $taskdata->ischeckstatus ?? true,
+            $taskdata->resourcepath ?? '',
+            $taskdata->userid ?? 0,
         );
 
         mtrace('Update Status ' . $taskdata->itemid . ' from ' . $taskdata->component . ' for user .' . $userid);

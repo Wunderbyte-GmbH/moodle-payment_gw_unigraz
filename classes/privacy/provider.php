@@ -60,7 +60,7 @@ class provider implements \core_privacy\local\metadata\null_provider, paygw_prov
         $record = $DB->get_record('paygw_unigraz', ['paymentid' => $payment->id]);
 
         $data = (object) [
-            'orderid' => $record->pp_orderid,
+            'orderid' => $record->unigraz_orderid,
         ];
         writer::with_context($context)->export_data(
             $subcontext,
