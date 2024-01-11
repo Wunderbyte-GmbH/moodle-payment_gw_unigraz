@@ -28,28 +28,30 @@ namespace paygw_unigraz\external;
 
 use context_system;
 use core_payment\helper;
-use external_api;
-use external_function_parameters;
-use external_value;
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_value;
 use core_payment\helper as payment_helper;
 use paygw_unigraz\event\delivery_error;
 use paygw_unigraz\event\payment_completed;
 use paygw_unigraz\event\payment_error;
 use paygw_unigraz\event\payment_successful;
 use paygw_unigraz\unigraz_helper;
+use local_shopping_cart\interfaces\interface_transaction_complete;
+use paygw_unigraz\interfaces\interface_transaction_complete as ug_interface_transaction_complete;
 
-defined('MOODLE_INTERNAL') || die();
+if (!interface_exists(interface_transaction_complete::class)) {
+    class_alias(ug_interface_transaction_complete::class, interface_transaction_complete::class);
+}
 
-require_once($CFG->libdir . '/externallib.php');
-
-class transaction_complete extends external_api {
+class transaction_complete extends external_api implements interface_transaction_complete {
 
     /**
      * Returns description of method parameters.
      *
      * @return external_function_parameters
      */
-    public static function execute_parameters() {
+    public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'component' => new external_value(PARAM_COMPONENT, 'The component name'),
             'paymentarea' => new external_value(PARAM_AREA, 'Payment area in the component'),
@@ -258,7 +260,7 @@ class transaction_complete extends external_api {
      *
      * @return external_function_parameters
      */
-    public static function execute_returns() {
+    public static function execute_returns(): external_function_parameters {
         return new external_function_parameters([
             'url' => new external_value(PARAM_URL, 'Redirect URL.'),
             'success' => new external_value(PARAM_BOOL, 'Whether everything was successful or not.'),
