@@ -25,7 +25,11 @@
 
 namespace paygw_unigraz\interfaces;
 
-use core_external\external_function_parameters;
+use external_function_parameters;
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/externallib.php');
 
 /**
  * Interface for transaction_complete class used in several payment gateways.

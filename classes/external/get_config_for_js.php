@@ -30,19 +30,15 @@ namespace paygw_unigraz\external;
 
 use context_system;
 use core_payment\helper;
-use core_user;
-use DateTime;
 use external_api;
 use external_function_parameters;
 use external_value;
 use external_single_structure;
-use local_shopping_cart\shopping_cart;
 use local_shopping_cart\shopping_cart_history;
 use paygw_unigraz\event\payment_added;
 use paygw_unigraz\task\check_status;
 use stdClass;
 use paygw_unigraz\unigraz_helper;
-
 
 defined('MOODLE_INTERNAL') || die();
 

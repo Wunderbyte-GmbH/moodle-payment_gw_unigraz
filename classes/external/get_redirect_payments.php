@@ -36,7 +36,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/externallib.php');
 
-
 class get_redirect_payments extends external_api {
 
     /**
