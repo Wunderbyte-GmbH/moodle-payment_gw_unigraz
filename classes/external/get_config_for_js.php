@@ -125,10 +125,19 @@ class get_config_for_js extends external_api {
             $cartid = $existingrecord->tid;
         }
 
-        // Create Task to check status after 30 minutes.
-        $userid = $USER->id;
+        // Create task to check status.
+        // We have to check 1 minute before item gets deleted from cache.
         $now = time();
-        $nextruntime = strtotime('+30 min', $now);
+        if (get_config('local_shopping_cart', 'expirationtime') && get_config('local_shopping_cart', 'expirationtime') > 2) {
+            $expirationminutes = get_config('local_shopping_cart', 'expirationtime') - 1;
+            $nextruntime = strtotime('+' . $expirationminutes . ' min', $now);
+        } else {
+            // Fallback.
+            $nextruntime = strtotime('+30 min', $now);
+        }
+
+        // Use ID of logged-in user.
+        $userid = (int)$USER->id;
 
         $taskdata = new stdClass();
         $taskdata->itemid = $itemid;
@@ -138,11 +147,12 @@ class get_config_for_js extends external_api {
         $taskdata->tid = $cartid;
         $taskdata->ischeckstatus = true;
         $taskdata->cartid = $cartid;
+        $taskdata->userid = $userid;
 
         $checkstatustask = new check_status();
         $checkstatustask->set_userid($userid);
-        $checkstatustask->set_next_run_time($nextruntime);
         $checkstatustask->set_custom_data($taskdata);
+        $checkstatustask->set_next_run_time($nextruntime);
         \core\task\manager::reschedule_or_queue_adhoc_task($checkstatustask);
 
         return [
