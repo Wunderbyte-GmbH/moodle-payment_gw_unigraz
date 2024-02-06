@@ -25,7 +25,7 @@ import Ajax from 'core/ajax';
 import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 
-export const init = (itemid, customer, component, paymentarea, ischeckstatus, cartid) => {
+export const init = (itemid, customer, component, paymentarea, ischeckstatus, tid) => {
 
 
     Ajax.call([{
@@ -34,7 +34,7 @@ export const init = (itemid, customer, component, paymentarea, ischeckstatus, ca
             component,
             paymentarea,
             itemid,
-            cartid,
+            tid,
             token: '',
             customer,
             ischeckstatus
@@ -84,9 +84,9 @@ export const init = (itemid, customer, component, paymentarea, ischeckstatus, ca
                 location.href = data.url;
             }
         },
-        fail: function() {
+        fail: function(ex) {
             // eslint-disable-next-line no-console
-            // console.log("ex:" + ex);
+            console.log("ex:" + ex);
         },
     }]);
 
