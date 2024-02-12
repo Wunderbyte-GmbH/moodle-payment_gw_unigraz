@@ -72,4 +72,4 @@ $string['EPS'] = "EP";
 $string['unknowncity'] = "unknown city";
 $string['unknowncountry'] = "unknown country";
 $string['unknownzip'] = "unknown zip";
-$string['unknownaddress'] = "unknown address";
+$string['unknownaddress'] = ""; // Uni Graz demanded it to be empty.
