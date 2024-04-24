@@ -104,7 +104,7 @@ class unigraz_helper {
             "user_url_cancel" => $redirecturl,
             "user_url_pending" => $redirecturl,
             "user_url_timeout" => $redirecturl,
-            "user_url_notify" => $redirecturl
+            "user_url_notify" => $redirecturl . '&jsonurl=1',
         ];
         $data = json_encode($obj);
         $headers = array
