@@ -81,9 +81,10 @@ class unigraz_helper {
      * @param  int $providerid I.E Creditcard, Klarna etc.
      * @param  string $redirecturl The url to which the gateway redirects after payment
      * @param  object $userdata Containing the user data
+     * @param  int $itemid shoppingcard id
      * @return string The url that can be called for the redirect
      */
-    public function checkout_cart($cartid, $providerid, $redirecturl, $userdata) {
+    public function checkout_cart($cartid, $providerid, $redirecturl, $userdata, $itemid) {
 
         profile_load_custom_fields($userdata);
         $obj = (object) [
@@ -99,6 +100,7 @@ class unigraz_helper {
             "city" => !empty($userdata->city) ? $userdata->city : get_string('unknowncity', 'paygw_unigraz'),
             "country" => !empty($userdata->country) ? $userdata->country : get_string('unknowncountry', 'paygw_unigraz'),
             "ip" => "8.8.8.8",
+            "payment_reference" => $itemid,
             "user_url_success" => $redirecturl,
             "user_url_failure" => $redirecturl,
             "user_url_cancel" => $redirecturl,

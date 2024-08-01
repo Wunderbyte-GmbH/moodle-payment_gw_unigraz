@@ -75,7 +75,7 @@ class get_redirect_payments extends external_api {
 
         $userdata = core_user::get_user($USER->id);
 
-        $url = $ughelper->checkout_cart($cartid, $providerid, $redirecturl, $userdata);
+        $url = $ughelper->checkout_cart($cartid, $providerid, $redirecturl, $userdata, $itemid);
 
         return [
             'url' => $url,

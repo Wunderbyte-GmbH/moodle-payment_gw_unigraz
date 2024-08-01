@@ -117,8 +117,8 @@ class get_config_for_js extends external_api {
                 'userid' => $USER->id,
                 'objectid' => $id,
                 'other' => [
-                    'orderid' => $cartid
-                ]
+                    'orderid' => $cartid,
+                ],
             ]);
             $event->trigger();
         } else {
