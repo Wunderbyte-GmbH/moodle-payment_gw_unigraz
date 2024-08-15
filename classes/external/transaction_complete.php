@@ -48,6 +48,9 @@ if (!interface_exists(interface_transaction_complete::class)) {
     class_alias(ug_interface_transaction_complete::class, interface_transaction_complete::class);
 }
 
+/**
+ * Transaction complete class.
+ */
 class transaction_complete extends external_api implements interface_transaction_complete {
 
     /**
@@ -197,7 +200,7 @@ class transaction_complete extends external_api implements interface_transaction
                                 'userid' => $userid,
                                 'other' => [
                                     'orderid' => $tid,
-                                ]
+                                ],
                             ]);
                             $event->trigger();
                         }
@@ -237,6 +240,9 @@ class transaction_complete extends external_api implements interface_transaction
             // Could not capture authorization!
             $success = false;
             $message = get_string('cannotfetchorderdatails', 'paygw_unigraz') . " " . strval($orderdetails);
+
+            // We need to transform the success url to a "no success url".
+            $url = str_replace('success=1', 'success=0', $successurl);
         }
 
         // If there is no success, we trigger this event.
