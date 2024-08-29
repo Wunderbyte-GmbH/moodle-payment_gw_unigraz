@@ -61,7 +61,7 @@ class get_redirect_payments extends external_api {
             'paymentarea' => $paymentarea,
             'itemid' => $itemid,
             'cartid' => $cartid,
-            'providerid' => $providerid
+            'providerid' => $providerid,
         ]);
         $config = helper::get_gateway_configuration($component, $paymentarea, $itemid, 'unigraz');
         $environment = $config['environment'];

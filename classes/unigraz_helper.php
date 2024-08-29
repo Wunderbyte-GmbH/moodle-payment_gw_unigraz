@@ -87,6 +87,16 @@ class unigraz_helper {
     public function checkout_cart($cartid, $providerid, $redirecturl, $userdata, $itemid) {
 
         profile_load_custom_fields($userdata);
+
+        $notifyurl = new \moodle_url(
+            '/local/shopping_cart/checkout.php',
+            [
+                'identifier' => $cartid,
+                'success' => '1',
+                'jsononly' => '1',
+            ]
+        );
+
         $obj = (object) [
             "provider_id" => $providerid,
             "user_variable" => "localIdentifierCheckout",
@@ -94,7 +104,7 @@ class unigraz_helper {
             "gender" => 0,
             "first_name" => !empty($userdata->firstname) ? $userdata->firstname : 'First Name Unknown',
             "last_name" => !empty($userdata->lastname) ? $userdata->lastname : 'Last Name Unknown',
-            "address" => !empty($userdata->address) ? $userdata->address : get_string('unknownaddress', 'paygw_unigraz'),
+            "address" => !empty($userdata->address) ? $userdata->address : "-",
             "zip" => !empty($userdata->profile['postcode']) ? $userdata->profile['postcode'] :
                 get_string('unknownzip', 'paygw_unigraz'),
             "city" => !empty($userdata->city) ? $userdata->city : get_string('unknowncity', 'paygw_unigraz'),
@@ -106,13 +116,12 @@ class unigraz_helper {
             "user_url_cancel" => $redirecturl,
             "user_url_pending" => $redirecturl,
             "user_url_timeout" => $redirecturl,
-            "user_url_notify" => $redirecturl . '&jsononly=1',
+            "user_url_notify" => $notifyurl->out(),
         ];
         $data = json_encode($obj);
-        $headers = array
-        (
-                'Content-Type: application/json'
-        );
+        $headers = [
+            'Content-Type: application/json'
+        ];
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $this->baseurl . '/cart' . '/' . $cartid . '/checkout' );
         curl_setopt( $ch, CURLOPT_POST, true );

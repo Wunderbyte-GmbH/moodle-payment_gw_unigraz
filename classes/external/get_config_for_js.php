@@ -164,7 +164,7 @@ class get_config_for_js extends external_api {
             'environment' => $environment,
             'language' => $language,
             'providerobject' => $provider,
-            'cartid' => $cartid
+            'cartid' => $cartid,
         ];
     }
 
