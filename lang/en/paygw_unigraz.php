@@ -73,3 +73,5 @@ $string['unknowncity'] = "unknown city";
 $string['unknowncountry'] = "unknown country";
 $string['unknownzip'] = "unknown zip";
 $string['unknownaddress'] = "unknown address";
+
+$string['tokenforverification'] = "Token for verification";

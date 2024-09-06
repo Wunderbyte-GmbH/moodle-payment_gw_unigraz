@@ -74,4 +74,4 @@ $string['unknowncountry'] = "Unbekanntes Land";
 $string['unknownzip'] = "Unbekannte Postleitzahl";
 $string['unknownaddress'] = "Unbekannte Adresse";
 
-
+$string['tokenforverification'] = "Token für Verifikation";

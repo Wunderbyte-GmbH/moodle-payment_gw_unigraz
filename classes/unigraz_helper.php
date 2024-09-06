@@ -89,11 +89,12 @@ class unigraz_helper {
         profile_load_custom_fields($userdata);
 
         $notifyurl = new \moodle_url(
-            '/local/shopping_cart/checkout.php',
+            '/webservice/rest/server.php',
             [
+                'wsfunction' => 'local_shopping_cart_verify_purchase',
+                'wstoken' => get_config('paygw_unigraz', 'tokenforverification'),
+                'moodlewsrestformat' => 'json',
                 'identifier' => $cartid,
-                'success' => '1',
-                'jsononly' => '1',
             ]
         );
 
@@ -116,11 +117,11 @@ class unigraz_helper {
             "user_url_cancel" => $redirecturl,
             "user_url_pending" => $redirecturl,
             "user_url_timeout" => $redirecturl,
-            "user_url_notify" => $notifyurl->out(),
+            "user_url_notify" => $notifyurl->out(false),
         ];
         $data = json_encode($obj);
         $headers = [
-            'Content-Type: application/json'
+            'Content-Type: application/json',
         ];
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $this->baseurl . '/cart' . '/' . $cartid . '/checkout' );
