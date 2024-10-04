@@ -159,13 +159,20 @@ class transaction_complete extends external_api implements interface_transaction
 
                 $existingdata = $DB->get_record('paygw_unigraz', array('unigraz_orderid' => $tid));
 
-                if (!empty($existingdata) || empty($checkorder) ) {
+                if (!empty($existingdata)) {
+                    return [
+                        'url' => $url ?? '',
+                        'success' => true,
+                        'message' => 'doublechecking payment',
+                    ];
+                }
+
+                if (empty($checkorder)) {
                     // Purchase already stored.
                     $success = false;
                     $message = get_string('internalerror', 'paygw_unigraz');
 
                 } else {
-
                     try {
                         $paymentid = payment_helper::save_payment(
                         $payable->get_account_id(),
