@@ -81,7 +81,7 @@ class unigraz_helper {
      * @param  int $providerid I.E Creditcard, Klarna etc.
      * @param  string $redirecturl The url to which the gateway redirects after payment
      * @param  object $userdata Containing the user data
-     * @param  int $itemid shoppingcard id
+     * @param  int $itemid shoppingcart id
      * @return string The url that can be called for the redirect
      */
     public function checkout_cart($cartid, $providerid, $redirecturl, $userdata, $itemid) {
@@ -94,7 +94,10 @@ class unigraz_helper {
                 'wsfunction' => 'local_shopping_cart_verify_purchase',
                 'wstoken' => get_config('paygw_unigraz', 'tokenforverification'),
                 'moodlewsrestformat' => 'json',
-                'identifier' => $cartid,
+                'identifier' => $itemid,
+                'tid' => $cartid,
+                'paymentgateway' => 'unigraz',
+                'userid' => $userdata->id,
             ]
         );
 

@@ -234,7 +234,7 @@ class transaction_complete extends external_api implements interface_transaction
                 }
             } else {
                 $success = false;
-                $message = get_string('payment_error', 'paygw_unigraz');
+                $message = get_string('payment_error', 'paygw_unigraz') . " " . strval($orderdetails);
             }
         } else {
             // Could not capture authorization!
