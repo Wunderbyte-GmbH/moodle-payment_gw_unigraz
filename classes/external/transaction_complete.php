@@ -241,12 +241,12 @@ class transaction_complete extends external_api implements interface_transaction
                 }
             } else {
                 $success = false;
-                $message = get_string('payment_error', 'paygw_unigraz') . " " . strval($orderdetails);
+                $message = get_string('payment_error', 'paygw_unigraz') . " " . var_export($orderdetails);
             }
         } else {
             // Could not capture authorization!
             $success = false;
-            $message = get_string('cannotfetchorderdatails', 'paygw_unigraz') . " " . strval($orderdetails);
+            $message = get_string('cannotfetchorderdatails', 'paygw_unigraz') . " " . var_export($orderdetails);
 
             // We need to transform the success url to a "no success url".
             $url = str_replace('success=1', 'success=0', $successurl);
