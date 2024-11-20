@@ -104,6 +104,10 @@ class transaction_complete extends external_api implements interface_transaction
             'userid' => $userid,
         ]);
 
+        if (empty($userid)) {
+            $userid = $USER->id;
+        }
+
         $config = (object)helper::get_gateway_configuration($component, $paymentarea, $itemid, 'unigraz');
         $sandbox = $config->environment == 'sandbox';
 
@@ -155,7 +159,7 @@ class transaction_complete extends external_api implements interface_transaction
                 // Check if order is existing.
 
                 $checkorder = $DB->get_record('paygw_unigraz_openorders', array('tid' => $tid, 'itemid' => $itemid,
-                'userid' => intval($USER->id)));
+                'userid' => intval($userid)));
 
                 $existingdata = $DB->get_record('paygw_unigraz', array('unigraz_orderid' => $tid));
 
@@ -179,7 +183,7 @@ class transaction_complete extends external_api implements interface_transaction
                         $component,
                         $paymentarea,
                         $itemid,
-                        (int) $USER->id,
+                        (int) $userid,
                         $amount,
                         $currency,
                         'unigraz'
