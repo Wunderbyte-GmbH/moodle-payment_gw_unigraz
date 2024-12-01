@@ -17,7 +17,7 @@
 /**
  * This file contains the definition for the renderable classes for the booking instance
  *
- * @package   local_musi
+ * @package   paygw_unigraz
  * @copyright 2021 Georg Maißer {@link http://www.wunderbyte.at}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -44,6 +44,13 @@ class checkout implements renderable, templatable {
 
     /**
      * In the Constructor, we gather all the data we need ans store it in the data property.
+     *
+     * @param int $itemid The client id.
+     * @param string $customer
+     * @param string $component payone brandname.
+     * @param string $paymentarea payone secret.
+     * @param bool $ischeckstatus
+     * @param int $cartid The cart id.
      */
     public function __construct($itemid, $customer, $component, $paymentarea, $ischeckstatus, $cartid) {
 
@@ -53,14 +60,15 @@ class checkout implements renderable, templatable {
         $this->data['paymentarea'] = $paymentarea;
         $this->data['ischeckstatus'] = $ischeckstatus;
         $this->data['cartid'] = $cartid;
-
     }
 
     /**
+     * Export for template.
+     *
      * @param renderer_base $output
      * @return array
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output): array {
 
         return $this->data;
     }

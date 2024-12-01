@@ -17,7 +17,7 @@
 /**
  * Contains helper class to work with unigraz REST API.
  *
- * @package    core_payment
+ * @package    paygw_unigraz
  * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,6 +34,13 @@ require_once("$CFG->dirroot/user/lib.php");
 require_once("$CFG->dirroot/user/profile/lib.php");
 require_once($CFG->libdir . '/filelib.php');
 
+/**
+ * Helper class to work with unigraz REST API.
+ *
+ * @package   paygw_unigraz
+ * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class unigraz_helper {
 
     /**
@@ -44,10 +51,10 @@ class unigraz_helper {
     /**
      * helper constructor
      *
+     * @param string $environment Whether we are working with the sandbox environment or not.
      * @param string $secret unigraz secret.
-     * @param bool $sandbox Whether we are working with the sandbox environment or not.
      */
-    public function __construct( $environment, string $secret ) {
+    public function __construct(string $environment, string $secret) {
 
         if ($environment == 'sandbox') {
             $this->baseurl = 'https://stagebezahlung.uni-graz.at/v/1/shop/' . $secret;
