@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Upgrade the plugin.
  *
@@ -47,14 +45,7 @@ function xmldb_paygw_unigraz_upgrade(int $oldversion): bool {
             $dbman->add_field($table, $field);
         }
 
-        // unigraz savepoint reached.
-        upgrade_plugin_savepoint(true, 2022080800, 'paygw', 'unigraz');
-    }
-
-    if ($oldversion < 2022080800) {
-
         // Define field pboriginal to be added to paygw_unigraz.
-        $table = new xmldb_table('paygw_unigraz');
         $field = new xmldb_field('pboriginal', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'paymentbrand');
 
         // Conditionally launch add field pboriginal.
@@ -62,7 +53,7 @@ function xmldb_paygw_unigraz_upgrade(int $oldversion): bool {
             $dbman->add_field($table, $field);
         }
 
-        // unigraz savepoint reached.
+        // Unigraz savepoint reached.
         upgrade_plugin_savepoint(true, 2022080800, 'paygw', 'unigraz');
     }
 
