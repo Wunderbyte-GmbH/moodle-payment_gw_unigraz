@@ -26,6 +26,8 @@ use paygw_unigraz\output\checkout;
 
 require_once(__DIR__ . '/../../../config.php');
 
+require_login();
+
 global $DB, $PAGE, $OUTPUT, $USER;
 
 $customer = required_param('customer', PARAM_RAW);
@@ -34,8 +36,6 @@ $component = required_param('component', PARAM_RAW);
 $paymentarea = required_param('paymentarea', PARAM_RAW);
 $ischeckstatus = required_param('ischeckstatus', PARAM_BOOL);
 $cartid = required_param('cartid', PARAM_INT);
-
-// $ischeckstatus = false;
 
 if (!$context = context_system::instance()) {
     throw new moodle_exception('badcontext');

@@ -60,7 +60,8 @@ class delivery_error extends \core\event\base {
      *
      */
     public function get_description(): string {
-        return "The user with the id {$this->userid} has tried to pay, but an error occured on delivery: " . $this->other['message'];
+        return
+            "The user with the id {$this->userid} has tried to pay, but an error occured on delivery: " . $this->other['message'];
     }
 
     /**
