@@ -37,7 +37,6 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/externallib.php');
 
 class get_redirect_payments extends external_api {
-
     /**
      * Returns description of method parameters.
      *
@@ -54,7 +53,7 @@ class get_redirect_payments extends external_api {
     }
 
     public static function execute($component, $paymentarea, $itemid, $cartid, $providerid) {
-        GLOBAL $CFG, $USER;
+        global $CFG, $USER;
 
         self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
@@ -80,7 +79,6 @@ class get_redirect_payments extends external_api {
         return [
             'url' => $url,
         ];
-
     }
 
     /**

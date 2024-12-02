@@ -33,8 +33,7 @@ if ($ADMIN->fulltree) {
         '',
         '',
         PARAM_TEXT
-        )
-    );
+    ));
 
     \core_payment\helper::add_common_gateway_settings($settings, 'paygw_unigraz');
 }

@@ -42,7 +42,6 @@ require_once($CFG->libdir . '/filelib.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class unigraz_helper {
-
     /**
      * @var string base URL
      */
@@ -134,13 +133,13 @@ class unigraz_helper {
             'Content-Type: application/json',
         ];
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_URL, $this->baseurl . '/cart' . '/' . $cartid . '/checkout' );
-        curl_setopt( $ch, CURLOPT_POST, true );
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
-        $result = curl_exec($ch );
-        curl_close( $ch );
+        curl_setopt($ch, CURLOPT_URL, $this->baseurl . '/cart' . '/' . $cartid . '/checkout');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
+        curl_close($ch);
         $obj = json_decode($result);
         return $obj->object->url_instant;
     }
@@ -180,7 +179,7 @@ class unigraz_helper {
         $articles = [];
         $now = time();
         foreach ($items as $item) {
-            list($sku, $label) = explode(' - ', $item->itemname);
+            [$sku, $label] = explode(' - ', $item->itemname);
 
             if (!empty($item->serviceperiodstart)) {
                 $performancebebgin = date('Y-m-d', $item->serviceperiodstart);
@@ -218,18 +217,17 @@ class unigraz_helper {
 
         $headers = ['Content-Type: application/json'];
         $ch = curl_init();
-        curl_setopt( $ch, CURLOPT_URL, $this->baseurl . '/cart');
-        curl_setopt( $ch, CURLOPT_POST, true );
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-        curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
-        $result = curl_exec($ch );
+        curl_setopt($ch, CURLOPT_URL, $this->baseurl . '/cart');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        $result = curl_exec($ch);
 
         $info = curl_getinfo($ch);
         $error = curl_error($ch);
 
-        curl_close( $ch );
+        curl_close($ch);
         return $result;
-
     }
 }

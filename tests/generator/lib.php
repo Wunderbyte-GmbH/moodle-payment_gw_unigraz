@@ -23,7 +23,6 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class paygw_unigraz_generator extends testing_module_generator {
-
     /**
      *
      * @var int keep track of how many booking options have been created.

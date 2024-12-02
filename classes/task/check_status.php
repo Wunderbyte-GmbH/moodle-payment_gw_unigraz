@@ -38,7 +38,6 @@ global $CFG;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class check_status extends \core\task\adhoc_task {
-
     /**
      * Get name of Module.
      *
@@ -74,6 +73,5 @@ class check_status extends \core\task\adhoc_task {
         );
 
         mtrace('Update Status ' . $taskdata->itemid . ' from ' . $taskdata->component . ' for user .' . $taskdata->userid);
-
     }
 }

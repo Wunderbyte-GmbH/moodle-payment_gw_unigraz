@@ -45,7 +45,6 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/externallib.php');
 
 class get_config_for_js extends external_api {
-
     /**
      * Returns description of method parameters.
      *
@@ -69,7 +68,7 @@ class get_config_for_js extends external_api {
      * @return string[]
      */
     public static function execute(string $component, string $paymentarea, int $itemid): array {
-        GLOBAL $CFG, $USER, $SESSION, $DB;
+        global $CFG, $USER, $SESSION, $DB;
         self::validate_parameters(self::execute_parameters(), [
             'component' => $component,
             'paymentarea' => $paymentarea,

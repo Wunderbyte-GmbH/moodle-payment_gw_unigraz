@@ -44,7 +44,6 @@ use stdClass;
  * @runTestsInSeparateProcesses
  */
 final class checkout_test extends \advanced_testcase {
-
     /** @var \core_payment\account account */
     private $account;
 

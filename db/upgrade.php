@@ -35,7 +35,6 @@ function xmldb_paygw_unigraz_upgrade(int $oldversion): bool {
     // Automatically generated Moodle v3.11.0 release upgrade line.
     // Put any upgrade step following this.
     if ($oldversion < 2022080800) {
-
         // Define field paymentbrand to be added to paygw_unigraz.
         $table = new xmldb_table('paygw_unigraz');
         $field = new xmldb_field('paymentbrand', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'unigraz_orderid');
@@ -58,7 +57,6 @@ function xmldb_paygw_unigraz_upgrade(int $oldversion): bool {
     }
 
     if ($oldversion < 2023100400) {
-
         // Changing type of field tid on table paygw_unigraz_openorders to char.
         $table = new xmldb_table('paygw_unigraz_openorders');
         $field = new xmldb_field('tid', XMLDB_TYPE_CHAR, '256', null, XMLDB_NOTNULL, null, null, 'id');

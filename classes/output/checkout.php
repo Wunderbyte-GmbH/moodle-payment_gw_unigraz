@@ -38,7 +38,6 @@ use core_payment\helper;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class checkout implements renderable, templatable {
-
     /** @var array $checkoutid */
     public $data = [];
 

@@ -74,4 +74,3 @@ $string['unknownbrand'] = "UK";
 $string['unknowncity'] = "unknown city";
 $string['unknowncountry'] = "unknown country";
 $string['unknownzip'] = "unknown zip";
-

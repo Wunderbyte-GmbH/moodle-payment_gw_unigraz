@@ -52,7 +52,6 @@ if (!interface_exists(interface_transaction_complete::class)) {
  * Transaction complete class.
  */
 class transaction_complete extends external_api implements interface_transaction_complete {
-
     /**
      * Returns description of method parameters.
      *
@@ -67,8 +66,12 @@ class transaction_complete extends external_api implements interface_transaction
             'token' => new external_value(PARAM_RAW, 'Purchase token', VALUE_DEFAULT, ''),
             'customer' => new external_value(PARAM_RAW, 'Customer Id', VALUE_DEFAULT, ''),
             'ischeckstatus' => new external_value(PARAM_BOOL, 'If initial purchase or cron execution', VALUE_DEFAULT, false),
-            'resourcepath' => new external_value(PARAM_TEXT, 'The order id coming back from the payment provider',
-                VALUE_DEFAULT, ''),
+            'resourcepath' => new external_value(
+                PARAM_TEXT,
+                'The order id coming back from the payment provider',
+                VALUE_DEFAULT,
+                ''
+            ),
             'userid' => new external_value(PARAM_INT, 'user id', VALUE_DEFAULT, 0),
         ]);
     }
@@ -88,8 +91,17 @@ class transaction_complete extends external_api implements interface_transaction
      * @param int $userid
      * @return array
      */
-    public static function execute(string $component, string $paymentarea, int $itemid, string $tid = '', string $token = '0',
-        string $customer = '0', bool $ischeckstatus = false, string $resourcepath = '', int $userid = 0): array {
+    public static function execute(
+        string $component,
+        string $paymentarea,
+        int $itemid,
+        string $tid = '',
+        string $token = '0',
+        string $customer = '0',
+        bool $ischeckstatus = false,
+        string $resourcepath = '',
+        int $userid = 0
+    ): array {
 
         global $USER, $DB, $CFG, $DB;
         self::validate_parameters(self::execute_parameters(), [
@@ -133,7 +145,7 @@ class transaction_complete extends external_api implements interface_transaction
             $status = '';
             // SANDBOX OR PROD.
             if ($sandbox == true) {
-                if ($returnstatus == 31 ) {
+                if ($returnstatus == 31) {
                     // Approved.
                     $status = 'success';
                     $message = get_string('payment_successful', 'paygw_unigraz');
@@ -142,7 +154,7 @@ class transaction_complete extends external_api implements interface_transaction
                     $status = false;
                 }
             } else {
-                if ($returnstatus == 31 ) {
+                if ($returnstatus == 31) {
                     // Approved.
                     $status = 'success';
                     $message = get_string('payment_successful', 'paygw_unigraz');
@@ -175,18 +187,17 @@ class transaction_complete extends external_api implements interface_transaction
                     // Purchase already stored.
                     $success = false;
                     $message = get_string('internalerror', 'paygw_unigraz');
-
                 } else {
                     try {
                         $paymentid = payment_helper::save_payment(
-                        $payable->get_account_id(),
-                        $component,
-                        $paymentarea,
-                        $itemid,
-                        (int) $userid,
-                        $amount,
-                        $currency,
-                        'unigraz'
+                            $payable->get_account_id(),
+                            $component,
+                            $paymentarea,
+                            $itemid,
+                            (int) $userid,
+                            $amount,
+                            $currency,
+                            'unigraz'
                         );
 
                         $record = new \stdClass();
@@ -199,8 +210,12 @@ class transaction_complete extends external_api implements interface_transaction
                         $DB->insert_record('paygw_unigraz', $record);
 
                         // Set status in open_orders to complete.
-                        if ($existingrecord = $DB->get_record('paygw_unigraz_openorders',
-                         ['tid' => $tid])) {
+                        if (
+                            $existingrecord = $DB->get_record(
+                                'paygw_unigraz_openorders',
+                                ['tid' => $tid]
+                            )
+                        ) {
                             $existingrecord->status = 3;
                             $DB->update_record('paygw_unigraz_openorders', $existingrecord);
 
@@ -227,7 +242,6 @@ class transaction_complete extends external_api implements interface_transaction
                         // The order is delivered.
                         // If the delivery was not successful, we trigger an event.
                         if (!payment_helper::deliver_order($component, $paymentarea, $itemid, $paymentid, (int) $userid)) {
-
                             $context = context_system::instance();
                             $event = delivery_error::create(['context' => $context, 'other' => [
                                 'message' => $message,
