@@ -203,14 +203,14 @@ class unigraz_helper {
                 "performance_end" => $performanceend ?? date('Y-m-d', $now),
                 "account" => "441000", // Konto for USI.
                 "internal_order" => "AEP707000002", // Interalorder USI.
-                "user_variable" => "localIdentifierArticle"
+                "user_variable" => "localIdentifierArticle",
             ];
             array_push($articles, $singlearcticle);
         }
 
         $obj = (object) [
             "user_variable" => "localIdentifierCart",
-            "article" => $articles
+            "article" => $articles,
 
         ];
 

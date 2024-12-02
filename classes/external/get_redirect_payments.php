@@ -90,7 +90,7 @@ class get_redirect_payments extends external_api {
      */
     public static function execute_returns() {
         return new external_function_parameters([
-            'url' => new external_value(PARAM_URL, 'Redirect URL.')
+            'url' => new external_value(PARAM_URL, 'Redirect URL.'),
         ]);
     }
 }

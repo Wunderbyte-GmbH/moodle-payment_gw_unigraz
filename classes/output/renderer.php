@@ -21,7 +21,7 @@ use plugin_renderer_base;
 /**
  * A custom renderer class that extends the plugin_renderer_base and is used by the booking module.
  *
- * @package local_musi
+ * @package paygw_unigraz
  * @copyright 2022 Georg Maißer
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
