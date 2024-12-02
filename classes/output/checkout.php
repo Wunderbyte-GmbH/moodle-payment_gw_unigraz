@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the definition for the renderable classes for the booking instance
+ * This file contains the definition for the renderable classes for the checkout of paygw_unigraz instance
  *
- * @package   paygw_unigraz
- * @copyright 2021 Georg Maißer {@link http://www.wunderbyte.at}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_unigraz
+ * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace paygw_unigraz\output;
@@ -31,11 +31,11 @@ use templatable;
 use core_payment\helper;
 
 /**
- * This class prepares data for displaying a booking option instance
+ * This class prepares data for displaying a checkout of paygw_unigraz instance
  *
- * @package paygw_unigraz
- * @copyright 2022 Georg Maißer {@link http://www.wunderbyte.at}
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_unigraz
+ * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class checkout implements renderable, templatable {
     /** @var array $checkoutid */

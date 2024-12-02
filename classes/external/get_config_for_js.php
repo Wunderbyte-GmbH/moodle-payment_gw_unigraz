@@ -26,8 +26,6 @@ declare(strict_types=1);
 
 namespace paygw_unigraz\external;
 
-
-
 use context_system;
 use core_payment\helper;
 use external_api;
@@ -44,6 +42,13 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/externallib.php');
 
+/**
+ * Class contains a list of webservice functions related to the unigraz payment gateway.
+ *
+ * @package    paygw_unigraz
+ * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class get_config_for_js extends external_api {
     /**
      * Returns description of method parameters.

@@ -22,7 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function xmldb_paygw_unigraz_install() {
+/**
+ * Installer script.
+ *
+ * @return void
+ *
+ */
+function xmldb_paygw_unigraz_install(): void {
     global $CFG;
 
     // Enable the unigraz payment gateway on installation. It still needs to be configured and enabled for accounts.

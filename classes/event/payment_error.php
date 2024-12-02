@@ -32,20 +32,44 @@ namespace paygw_unigraz\event;
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class payment_error extends \core\event\base {
-    protected function init() {
+    /**
+     * Init.
+     *
+     * @return void
+     *
+     */
+    protected function init(): void {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
-    public static function get_name() {
+    /**
+     * Get name.
+     *
+     * @return string
+     *
+     */
+    public static function get_name(): string {
         return get_string('payment_error', 'paygw_unigraz');
     }
 
-    public function get_description() {
+    /**
+     * Get description.
+     *
+     * @return string
+     *
+     */
+    public function get_description(): string {
         return "The user with the id {$this->userid} has tried to pay, but an error occured: " . $this->other['message'];
     }
 
-    public function get_url() {
+    /**
+     * Get url.
+     *
+     * @return \moodle_url
+     *
+     */
+    public function get_url(): \moodle_url {
         return new \moodle_url('/payment/gateway/unigraz/checkout.php');
     }
 }

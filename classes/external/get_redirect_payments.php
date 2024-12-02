@@ -36,6 +36,13 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/externallib.php');
 
+/**
+ * Class contains a list of webservice functions related to the unigraz payment gateway.
+ *
+ * @package    paygw_unigraz
+ * @copyright  2022 Wunderbyte Gmbh <info@wunderbyte.at>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class get_redirect_payments extends external_api {
     /**
      * Returns description of method parameters.
@@ -52,7 +59,19 @@ class get_redirect_payments extends external_api {
         ]);
     }
 
-    public static function execute($component, $paymentarea, $itemid, $cartid, $providerid) {
+    /**
+     * Execute.
+     *
+     * @param mixed $component
+     * @param mixed $paymentarea
+     * @param mixed $itemid
+     * @param mixed $cartid
+     * @param mixed $providerid
+     *
+     * @return array
+     *
+     */
+    public static function execute($component, $paymentarea, $itemid, $cartid, $providerid): array {
         global $CFG, $USER;
 
         self::validate_parameters(self::execute_parameters(), [
