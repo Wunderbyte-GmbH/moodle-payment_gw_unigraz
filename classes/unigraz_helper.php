@@ -216,10 +216,7 @@ class unigraz_helper {
 
         $data = json_encode($obj);
 
-        $headers = array
-        (
-                'Content-Type: application/json'
-        );
+        $headers = ['Content-Type: application/json'];
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $this->baseurl . '/cart');
         curl_setopt( $ch, CURLOPT_POST, true );

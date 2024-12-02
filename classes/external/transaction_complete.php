@@ -158,10 +158,10 @@ class transaction_complete extends external_api implements interface_transaction
 
                 // Check if order is existing.
 
-                $checkorder = $DB->get_record('paygw_unigraz_openorders', array('tid' => $tid, 'itemid' => $itemid,
-                'userid' => intval($userid)));
+                $checkorder = $DB->get_record('paygw_unigraz_openorders', ['tid' => $tid, 'itemid' => $itemid,
+                'userid' => intval($userid)]);
 
-                $existingdata = $DB->get_record('paygw_unigraz', array('unigraz_orderid' => $tid));
+                $existingdata = $DB->get_record('paygw_unigraz', ['unigraz_orderid' => $tid]);
 
                 if (!empty($existingdata)) {
                     return [
@@ -218,10 +218,10 @@ class transaction_complete extends external_api implements interface_transaction
 
                         // We trigger the payment_successful event.
                         $context = context_system::instance();
-                        $event = payment_successful::create(array('context' => $context, 'other' => [
+                        $event = payment_successful::create(['context' => $context, 'other' => [
                             'message' => $message,
                             'orderid' => $tid,
-                        ]));
+                        ]]);
                         $event->trigger();
 
                         // The order is delivered.
@@ -229,10 +229,10 @@ class transaction_complete extends external_api implements interface_transaction
                         if (!payment_helper::deliver_order($component, $paymentarea, $itemid, $paymentid, (int) $userid)) {
 
                             $context = context_system::instance();
-                            $event = delivery_error::create(array('context' => $context, 'other' => [
+                            $event = delivery_error::create(['context' => $context, 'other' => [
                                 'message' => $message,
                                 'orderid' => $tid,
-                            ]));
+                            ]]);
                             $event->trigger();
                         }
 
@@ -260,12 +260,12 @@ class transaction_complete extends external_api implements interface_transaction
         if (!$success) {
             // We trigger the payment_successful event.
             $context = context_system::instance();
-            $event = payment_error::create(array('context' => $context, 'other' => [
+            $event = payment_error::create(['context' => $context, 'other' => [
                 'message' => $message,
                 'orderid' => $tid,
                 'itemid' => $itemid,
                 'component' => $component,
-                'paymentarea' => $paymentarea]));
+                'paymentarea' => $paymentarea]]);
             $event->trigger();
         }
 
