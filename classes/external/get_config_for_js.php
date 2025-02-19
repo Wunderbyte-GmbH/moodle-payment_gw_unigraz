@@ -111,7 +111,7 @@ class get_config_for_js extends external_api {
         $record->timemodified = $now;
 
         // Check for duplicate.
-        if (!$existingrecord = $DB->get_record('paygw_unigraz_openorders', ['itemid' => $itemid, 'userid' => $USER->id])) {
+        if (!$existingrecord = $DB->get_record('paygw_unigraz_openorders', ['itemid' => $itemid, 'userid' => $USER->id, 'tid' => $record->tid])) {
             $id = $DB->insert_record('paygw_unigraz_openorders', $record);
 
             // We trigger the payment_added event.
@@ -126,6 +126,20 @@ class get_config_for_js extends external_api {
             ]);
             $event->trigger();
         } else {
+
+            // There is one case where price could have changed (because of changes in credit application eg.
+            if ($amount != $existingrecord->price) {
+                // We need to update the open Orders table accordingly.
+                $DB->update_record(
+                    'paygw_unigraz_openorders',
+                    [
+                        'id' => $existingrecord->id,
+                        'price' => $amount,
+                        'timemodified' => time(),
+                    ]
+                );
+            }
+
             $cartid = $existingrecord->tid;
         }
 
