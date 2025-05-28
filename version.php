@@ -28,3 +28,4 @@ $plugin->release = 'v0.1.9';
 $plugin->version   = 2025021900;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2021051100;        // Requires this Moodle version.
 $plugin->component = 'paygw_unigraz';       // Full name of the plugin (used for diagnostics).
+$plugin->supported = [401, 405];
