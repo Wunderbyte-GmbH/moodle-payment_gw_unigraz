@@ -111,7 +111,12 @@ class get_config_for_js extends external_api {
         $record->timemodified = $now;
 
         // Check for duplicate.
-        if (!$existingrecord = $DB->get_record('paygw_unigraz_openorders', ['itemid' => $itemid, 'userid' => $USER->id, 'tid' => $record->tid])) {
+        if (
+            !$existingrecord = $DB->get_record(
+                'paygw_unigraz_openorders',
+                ['itemid' => $itemid, 'userid' => $USER->id, 'tid' => $record->tid]
+            )
+        ) {
             $id = $DB->insert_record('paygw_unigraz_openorders', $record);
 
             // We trigger the payment_added event.
