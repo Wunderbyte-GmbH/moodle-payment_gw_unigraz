@@ -69,7 +69,7 @@ final class checkout_test extends \advanced_testcase {
         // Load the credentials from Github.
         $config->brandname = getenv('BRANDNAME');
         $config->clientid = getenv('CLIENTID');
-        $config->secret = getenv('PAYONE_SECRET');
+        $config->secret = getenv('UNIGRAZ_SECRET');
 
         $record->config = json_encode($config);
 

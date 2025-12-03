@@ -49,3 +49,9 @@ jobs:
 
       # For strict code quality checks
       codechecker_max_warnings: 0
+
+    secrets:
+      # Required secrets for your PAYONE tests
+      brandname: ${{ secrets.BRANDNAME }}
+      clientid: ${{ secrets.CLIENTID }}
+      unigraz_secret: ${{ secrets.UNIGRAZ_SECRET }}
